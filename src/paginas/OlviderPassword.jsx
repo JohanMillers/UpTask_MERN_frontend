@@ -1,12 +1,56 @@
+import { useState } from "react";
 import { Link } from "react-router-dom";
+import Alerta from "../componets/Alerta";
+import axios from 'axios';
+
 const OlviderPassword = () => {
+  const [email, setEmail] = useState('')
+  const [alerta, setAlerta] = useState({});
+
+  const handleSubmit = async e => {
+    e.preventDefault();
+
+    if (email === '' || email.length < 6) {
+      setAlerta({
+        msg: 'El Email es obligatorio',
+        error: true
+      });
+      return
+    }
+
+    try {
+      //TODO: Mover hacia un cliente Axios
+      const { data } = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/usuarios/olvide-password`,
+      //TODO: Mover hacia un cliente Axios
+        { email });
+      
+      setAlerta({
+        msg: data.msg,
+        error: false
+      });
+      
+    } catch (error) {
+      setAlerta({
+        msg: error.response.data.msg,
+        error: true
+      });
+      
+    }
+
+  }
+  const { msg } = alerta;
+
   return (
     <>
     <h1 className="text-sky-600 font-black text-6xl capitalize">Recupera tu acceso y no pierdas tus {''}
       <span className="text-slate-700">Proyectos</span>
-    </h1>
+      </h1>
+      {msg && <Alerta alerta={alerta}/>}
 
-    <form className="my-10 bg-white shadow rounded-lg p-10">
+      <form
+        className="my-10 bg-white shadow rounded-lg p-10"
+        onSubmit={handleSubmit}
+      >
         <div>
           <label
           className="uppercase text-gray-600 block text-xl font-bold"
@@ -18,7 +62,9 @@ const OlviderPassword = () => {
           id="email"
           type="email"
           placeholder="Email de registro"
-          className="w-full mt-3 p-3 border rounded-xl bg-gray-50"
+            className="w-full mt-3 p-3 border rounded-xl bg-gray-50"
+            value={email}
+            onChange={e => setEmail(e.target.value) }
         
         />
       </div>
