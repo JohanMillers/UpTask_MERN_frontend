@@ -8,11 +8,15 @@ import OlviderPassword from './paginas/OlviderPassword';
 import NuevoPassword from './paginas/NuevoPassword';
 import ConfirmaCuenta from './paginas/ConfirmaCuenta';
 
+import { AuthProvider } from './context/AuthProvider';
+
+
 
 function App() {
   
   return (
     <BrowserRouter>
+      <AuthProvider>
       <Routes>
         <Route path="/" element={<AuthLayout />}>
           <Route index element={<Login />} />
@@ -23,8 +27,7 @@ function App() {
         </Route>
 
       </Routes>
-
-
+      </AuthProvider>
     </BrowserRouter>
   )
 }

@@ -23,6 +23,7 @@ const Registrar = () => {
         error: true
       })
       return
+      
     }
     if(password !== repetirPassword ) {
       setAlerta({
@@ -44,6 +45,7 @@ const Registrar = () => {
     
     //Crear usuario en la API
     try {
+
       const { data } = await clienteAxios.post(`/usuarios`,{ nombre, email, password })
       
       setAlerta({ 
@@ -55,6 +57,7 @@ const Registrar = () => {
       setEmail('')
       setPassword('')
       setRepetirPassword('')
+      setAlerta({})
       
     } catch (error) {
       setAlerta({

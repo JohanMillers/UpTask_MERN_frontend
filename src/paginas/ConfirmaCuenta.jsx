@@ -1,52 +1,44 @@
-import { useEffect, useState } from "react"
+import { useEffect, useState } from 'react'
 import { useParams, Link } from 'react-router-dom'
-import clienteAxios from "../config/clienteAxios"
-import Alerta from "../componets/Alerta"
+import clienteAxios from '../config/clienteAxios'
+import Alerta from '../componets/Alerta'
 
 
-const ConfirmaCuenta = () => {
-  const [alerta, setAlerta] = useState({});
+const ConfirmarCuenta = () => {
+
+  const [alerta, setAlerta] = useState({})
   const [cuentaConfirmada, setCuentaConfirmada] = useState(false)
 
   const params = useParams();
-  const { id } = params;
+  const { id } = params
 
   useEffect(() => {
-    const confirmaCuenta = async () => {
+    const confirmarCuenta = async () => {
       try {
-        
-        const url = `/usuarios/confirmar/${id}`
-        const { data } = await clienteAxios(url);
+          const url = `/usuarios/confirmar/${id}`
+          const { data } = await clienteAxios(url)
 
-        setAlerta({
-          msg: data.msg,
-          error: false
-        })
+          setAlerta({
+            msg: data.msg,
+            error: false
+          })
+          setCuentaConfirmada(true)
 
-        setCuentaConfirmada(true);
-
-        
       } catch (error) {
-        setAlerta({
-          msg: error.response.data.msg,
-          error: true
-
-        })
-        
+          setAlerta({
+            msg: error.response.data.msg,
+            error: true
+          })
       }
     }
-    confirmaCuenta();
-    
-  }, []);
+    confirmarCuenta();
+  }, [])
 
   const { msg } = alerta
-  
 
-
-  
   return (
     <>
-     <h1 className="text-sky-600 font-black text-6xl capitalize">Confirma tu cuenta y Comienza a crear tus {''}
+        <h1 className="text-sky-600 font-black text-6xl capitalize">Confirma tu cuenta y Comienza a crear tus {''}
             <span className="text-slate-700">proyectos</span>
         </h1>
 
@@ -64,4 +56,4 @@ const ConfirmaCuenta = () => {
   )
 }
 
-export default ConfirmaCuenta
+export default ConfirmarCuenta
