@@ -10,7 +10,9 @@ const Login = () => {
   const [password, setPassword] = useState('')
   const [alerta, setAlerta] = useState(false)
 
-  const { setAuth } = useAuth();
+  const {  setAuth} = useAuth();
+
+  
   
 
   const handleSubmint = async e => {
