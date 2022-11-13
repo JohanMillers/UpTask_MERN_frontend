@@ -1,17 +1,35 @@
-import { useState } from "react"
+import { useState,useEffect } from "react"
+import { useParams } from "react-router-dom"
 import useProyectos from "../hooks/useProyectos"
 import Alerta from "./Alerta"
 
 const FormularioProyecto = () => {
+    const [id,setId] = useState(null)
     const [nombre, setNombre] = useState('')
     const [descripcion, setDescripcion] = useState('')
     const [cliente, setCliente] = useState('')
-    const [fechaEntrega, setFechaEntrega] = useState()
+    const [fechaEntrega, setFechaEntrega] = useState('')
+
+    const params = useParams();
+    const { mostrarAlerta, alerta, submitProyecto,proyecto } = useProyectos();
+
+    useEffect(() => {
+        if (params.id) {
+            setId(proyecto.id)
+            setNombre(proyecto.nombre)
+            setDescripcion(proyecto.descripcion)
+            setFechaEntrega(proyecto.fechaEntrega?.split('T')[0])
+            setCliente(proyecto.cliente)
+        } else { 
+            console.log('Nuevo formulario..');
+        }
+        
+    },[params])
 
   
-    const { mostrarAlerta, alerta, submitProyecto } = useProyectos();
+    
 
-    const handleSubmit = e => {
+    const handleSubmit = async e => {
         e.preventDefault();
 
         if ([nombre, descripcion, fechaEntrega, cliente].includes('')) {
@@ -20,11 +38,14 @@ const FormularioProyecto = () => {
                 error: true
 
             })
-
-            return
-            
+            return   
         }
-        submitProyecto({nombre, descripcion, fechaEntrega, cliente})
+        await submitProyecto({ nombre, descripcion, fechaEntrega, cliente })
+        
+        setNombre('')
+        setDescripcion('')
+        setFechaEntrega('')
+        setCliente('')
 
     }
 
@@ -104,8 +125,8 @@ const FormularioProyecto = () => {
           </div>
           <input
               type="submit"
-              value="Crear Proyecto"
-              className="bg-sky-600 w-full p-3 uppercase font-bold text-white rounded cursor-pointer hover:bg-sky-700 transition-colors"
+              value={id ? 'Actualizar Proyecto': 'Crear Proyecto'}
+              className="bg-sky-600 w-full p-3 my-5 uppercase font-bold text-white rounded cursor-pointer hover:bg-sky-700 transition-colors"
           
           />
     </form>
