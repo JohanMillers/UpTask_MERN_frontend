@@ -1,6 +1,7 @@
 import { useState, useEffect, createContext } from 'react'
 import clienteAxios from '../config/clienteAxios';
-import {useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+
 
 const ProyectosContext = createContext();
 
@@ -10,6 +11,8 @@ const ProyectosProvider = ({ children }) => {
     const [alerta, setAlerta] = useState({});
     const [proyecto, setProyecto] = useState({});
     const [cargandos, setCargandos] = useState(false);
+    const [modalFormularioTarea, setModalFormularioTarea] = useState(false);
+
 
 
 
@@ -19,7 +22,7 @@ const ProyectosProvider = ({ children }) => {
         const obtenerProyectos = async () => {
             try {
                 const token = localStorage.getItem('token')
-                 if (!token) return
+                if (!token) return
             
                 const config = {
                     headers: {
@@ -28,7 +31,7 @@ const ProyectosProvider = ({ children }) => {
                     }
                 }
                 const { data } = await clienteAxios('/proyectos', config)
-                setProyectos(data)      
+                setProyectos(data)
             } catch (error) {
                 console.log(error);
                 
@@ -36,20 +39,20 @@ const ProyectosProvider = ({ children }) => {
         }
         obtenerProyectos();
 
-    },[])
+    }, [])
 
     const mostrarAlerta = alerta => {
         setAlerta(alerta)
 
         setTimeout(() => {
             setAlerta({})
-        },4000)
+        }, 4000)
     }
 
     const submitProyecto = async proyecto => {
 
         if (proyecto.id) {
-           await editarProyecto(proyecto);
+            await editarProyecto(proyecto);
         } else {
             await nuevoProyecto(proyecto);
         }
@@ -60,7 +63,7 @@ const ProyectosProvider = ({ children }) => {
     const editarProyecto = async proyecto => {
         try {
             const token = localStorage.getItem('token')
-            if(!token) return
+            if (!token) return
 
             const config = {
                 headers: {
@@ -92,7 +95,7 @@ const ProyectosProvider = ({ children }) => {
     const nuevoProyecto = async proyecto => {
         try {
             const token = localStorage.getItem('token')
-            if(!token) return
+            if (!token) return
 
             const config = {
                 headers: {
@@ -122,7 +125,7 @@ const ProyectosProvider = ({ children }) => {
     }
 
     const obtenerProyecto = async id => {
-       setCargandos(true)
+        setCargandos(true)
         
         try {
             const token = localStorage.getItem('token')
@@ -150,7 +153,7 @@ const ProyectosProvider = ({ children }) => {
     const eliminarProyecto = async id => {
         try {
             const token = localStorage.getItem('token')
-            if(!token) return
+            if (!token) return
 
             const config = {
                 headers: {
@@ -183,6 +186,44 @@ const ProyectosProvider = ({ children }) => {
         }
     }
 
+    const handleModalTarea = () => {
+        setModalFormularioTarea(!modalFormularioTarea)
+    }
+
+    const submitTarea = async tarea => { 
+        try {
+            const token = localStorage.getItem('token')
+            if(!token) return
+
+            const config = {
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`
+                }
+            }
+
+            const { data } = await clienteAxios.post('/tareas', tarea, config)
+            console.log(data)
+            mostrarAlerta({
+                msg: "Tarea Creada",
+                error: false
+            })
+
+            // setAlerta({})
+            // setModalFormularioTarea(false)
+
+            // // SOCKET IO
+            // socket.emit('nueva tarea', data)
+        } catch (error) {
+            console.log(error)
+        }
+    }
+    
+       
+        
+    
+
+
 
 
 
@@ -192,10 +233,13 @@ const ProyectosProvider = ({ children }) => {
             value={{
                 alerta,
                 cargandos,
+                modalFormularioTarea,
                 proyecto,
                 proyectos,
                 eliminarProyecto,
+                handleModalTarea,
                 mostrarAlerta,
+                submitTarea,
                 submitProyecto,
                 obtenerProyecto
 
