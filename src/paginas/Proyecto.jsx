@@ -5,6 +5,7 @@ import ModalFormularioTarea from '../componets/ModalFormularioTarea'
 import ModalEliminarTarea from "../componets/ModalEliminarTarea";
 import Tarea from "../componets/Tarea";
 import Alerta from "../componets/Alerta";
+import Colaborador from "../componets/Colaborador";
 
 const Proyecto = () => {
     const params = useParams();
@@ -71,6 +72,24 @@ const Proyecto = () => {
                   )) : 
                 <p className='text-center my-5 p-10'>No hay tareas en este proyecto</p>}
             </div>
+            <div className='flex items-center justify-between mt-10'>
+                    <p className='font-bold text-xl'>Colaboradores</p>
+                    <Link
+                      to={`/proyectos/nuevo-colaborador/${proyecto._id}`}
+                      className='text-gray-400 hover:text-black uppercase font-bold'
+                    >Añadir</Link>
+                </div>
+
+                <div className='bg-white shadow mt-10 rounded-lg'>
+                    {proyecto.colaboradores?.length ? 
+                      proyecto.colaboradores?.map( colaborador => (
+                          <Colaborador 
+                              key={colaborador._id}
+                              colaborador={colaborador}
+                          />
+                      )) : 
+                    <p className='text-center my-5 p-10'>No hay Colaboradores en este proyecto</p>}
+                </div>
 
             <ModalFormularioTarea />
             <ModalEliminarTarea/>
