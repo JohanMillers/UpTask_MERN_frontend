@@ -376,6 +376,46 @@ const ProyectosProvider = ({ children }) => {
             
         }
     }
+
+    const handleModalEliminarColaborador = (colaborador) => {
+        setModalEliminarColaborador(!modalEliminarColaborador)
+        setColaborador(colaborador)
+    }
+
+    const eliminarColaborador = async () => {
+        try {
+            const token = localStorage.getItem('token')
+            if(!token) return
+
+            const config = {
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`
+                }
+            }
+            const { data } = await clienteAxios.post(`/proyectos/eliminar-colaborador/${proyecto._id}`, { id: colaborador._id }, config)
+
+            const proyectoActualizado = {...proyecto}
+
+            proyectoActualizado.colaboradores = proyectoActualizado.colaboradores.filter(colaboradorState => colaboradorState._id !== colaborador._id )
+
+            setProyecto(proyectoActualizado)
+            setAlerta({
+                msg: data.msg,
+                error: false
+            })
+            setColaborador({})
+            setModalEliminarColaborador(false)
+
+            setTimeout(() => {
+                setAlerta({})
+            }, 3000);
+
+        } catch (error) {
+            console.log(error.response)
+        }
+    }
+
     
 
     return (
@@ -387,13 +427,16 @@ const ProyectosProvider = ({ children }) => {
                 modalFormularioTarea,
                 tarea,
                 modalEliminarTarea,
+                modalEliminarColaborador,
                 proyecto,
                 proyectos,
                 agregarColaborador,
+                eliminarColaborador,
                 eliminarProyecto,
                 eliminarTarea,
                 handleModalTarea,
                 handleModalEliminarTarea,
+                handleModalEliminarColaborador,
                 handleModalEditarTarea,
                 mostrarAlerta,
                 submitTarea,
