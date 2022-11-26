@@ -147,7 +147,10 @@ const ProyectosProvider = ({ children }) => {
             
             
         } catch (error) {
-            console.log(error)
+            setAlerta({
+                msg: error.response.data.msg,
+                error : true
+            })
         } finally {
             setCargandos(false)
         }
@@ -326,6 +329,7 @@ const ProyectosProvider = ({ children }) => {
 
             setColaborador(data)
             setAlerta({})
+            console.log(data)
         } catch (error) {
             setAlerta({
                 msg: error.response.data.msg,
@@ -360,10 +364,16 @@ const ProyectosProvider = ({ children }) => {
             }, 3000);
 
         } catch (error) {
-           setAlerta({
-               msg: error.response.data.msg,
-               error: true
-           })
+            setAlerta({
+                msg: error.response.data.msg,
+                error: true
+            });
+
+            setTimeout(() => {
+                setAlerta({})
+            }, 3000);
+            
+            
         }
     }
     
@@ -373,6 +383,7 @@ const ProyectosProvider = ({ children }) => {
             value={{
                 alerta,
                 cargandos,
+                colaborador,
                 modalFormularioTarea,
                 tarea,
                 modalEliminarTarea,
