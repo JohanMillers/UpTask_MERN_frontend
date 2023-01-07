@@ -24,12 +24,13 @@ const Proyecto = () => {
     },[])
     
     const { nombre } = proyecto;
+
+    
     if (cargandos) return 'Cargando...'
     
     const { msg } = alerta;
     
     return (
-        msg && alerta.error ? <Alerta alerta={alerta} /> : (
         <>
        
         <div className="flex justify-between">
@@ -67,11 +68,6 @@ const Proyecto = () => {
         )}
 
             <p className='font-bold text-xl mt-10'>Tareas del Proyecto</p>
-            <div className="flex justify-center"> 
-                <div className="w-full md:w-1/3 lg:w-1/4">
-                {msg && <Alerta alerta={alerta}/>}
-                </div>
-            </div>
             
             <div className='bg-white shadow mt-10 rounded-lg'>
                 {proyecto.tareas?.length ? 
@@ -122,7 +118,6 @@ const Proyecto = () => {
             </>
             
         )  
-)
 }
 
 export default Proyecto

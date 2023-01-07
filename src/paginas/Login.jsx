@@ -39,7 +39,8 @@ const Login = () => {
       setAlerta({
         msg: error.response.data.msg,
         error: true
-    })
+      })
+      
       
     }
 

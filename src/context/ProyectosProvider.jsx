@@ -124,8 +124,6 @@ const ProyectosProvider = ({ children }) => {
         } catch (error) {
             console.log(error)
         }
-        
-
     }
 
     const obtenerProyecto = async id => {
@@ -146,10 +144,14 @@ const ProyectosProvider = ({ children }) => {
             setProyecto(data);
             setAlerta({})
         } catch (error) {
+            navigate('/proyectos')
             setAlerta({
                 msg: error.response.data.msg,
                 error : true
             })
+            setTimeout(() => {
+                setAlerta({})
+            }, 3000);
         } finally {
             setCargandos(false)
         }
