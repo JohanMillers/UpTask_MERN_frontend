@@ -5,7 +5,6 @@ const Proyectos = () => {
 
   const { proyectos } = useProyectos();
 
-  console.log(proyectos)
 
   return (
     <>
