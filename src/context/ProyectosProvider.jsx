@@ -198,11 +198,13 @@ const ProyectosProvider = ({ children }) => {
     }
 
     const submitTarea = async tarea => {
-        if(tarea?.id) {
+        if (tarea?.id) {
             await editarTarea(tarea)
         } else {
             await crearTarea(tarea)
         }
+    }
+        
     
 
     const crearTarea = async tarea => {
@@ -233,7 +235,7 @@ const ProyectosProvider = ({ children }) => {
             }   
         }
        
-    }
+    
 
     const editarTarea = async tarea => {
         try {
@@ -435,7 +437,7 @@ const ProyectosProvider = ({ children }) => {
             setProyecto(proyectoActualizado)
             setTarea({})
             setAlerta({})
-            
+
         } catch (error) {
             console.log(error.response)
             
