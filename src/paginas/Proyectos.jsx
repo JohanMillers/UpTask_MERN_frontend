@@ -1,10 +1,11 @@
 import useProyectos from "../hooks/useProyectos"
 import PreviewProyecto from "../componets/PreviewProyecto";
 import Alerta from "../componets/Alerta";
+
+
+
 const Proyectos = () => {
-
   const { proyectos, alerta } = useProyectos();
-
   const { msg } = alerta;
 
   return (
