@@ -26,10 +26,9 @@ const Proyecto = () => {
         eliminarTareaProyecto,
         actualizarTareaProyecto,
         cambiarEstadoTarea
-    } = useProyectos();
+  } = useProyectos();
+   
     const admin = useAdmin();
-
-    console.log(admin)
 
     useEffect(() => {
         obtenerProyecto(params.id)
